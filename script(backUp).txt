@@ -1,0 +1,608 @@
+// list i need to built:
+// - inventory system
+// - player stats
+// - combat system (using 20 side dice)
+// - map
+// - story (with secret path to achieve different ending)
+// - add weapon and armor
+// - player class based on equipment
+
+// Game title - Path: Select
+
+let playerStats = {
+  str : 0,
+  dex : 0,
+  int : 0,
+  cha : 0,
+  wis : 0,
+  con : 0,
+};
+let inventory = [];
+let equippedWeapon1 = {};
+let equippedWeapon2 = {};
+let equippedArmor = {};
+let equippedAccessories = {};
+
+const button1 = document.querySelector("#button1");
+const button2 = document.querySelector("#button2");
+const button3 = document.querySelector("#button3");
+const button4 = document.querySelector("#button4");
+const customizeButton = document.querySelector("#customize-button");
+const createCharacter = document.querySelector("#create-character");
+const text = document.querySelector("#text");
+const strText = document.querySelector("#str-Text");
+const dexText = document.querySelector("#dex-Text");
+const intText = document.querySelector("#int-Text");
+const wisText = document.querySelector("#wis-Text");
+const conText = document.querySelector("#con-Text");
+const chaText = document.querySelector("#cha-Text") 
+const weaponList = [
+    {name: 'dagger', hand: 1, type: 'weapon', attack: 5, iconIndex: 0,criticalRate: 0, criticalDmg: 0, defense: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, freezeDmg: 0, lightningDmg: 0, spriteSheet: 'spriteSheetW1', x: 0, y: 335},
+    {name: 'one-handed sword', hand: 1,  type: 'weapon',attack: 15, criticalRate: 0, criticalDmg: 0, defense: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, freezeDmg: 0, lightningDmg: 0, spriteSheet: 'spriteSheetW1', x: 47, y: 335},
+    {name: 'bastard sword', hand: 1,  type: 'weapon',attack: 15, criticalRate: 0, criticalDmg: 0, defense: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, freezeDmg: 0, lightningDmg: 0, spriteSheet: 'spriteSheetW1', x: 144, y: 335},
+    {name: 'katana', hand: 2,  type: 'weapon',attack: 25, criticalRate: 0, criticalDmg: 0, defense: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, freezeDmg: 0, lightningDmg: 0, spriteSheet: 'spriteSheetW1', x: 0, y: 383},
+    {name: 'war axe', hand: 2, type: 'weapon', attack: 35, criticalRate: 0, criticalDmg: 0, defense: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, freezeDmg: 0, lightningDmg: 0, spriteSheet: 'spriteSheetW1',  x: 528, y: 287},
+    {name: 'spear', hand: 2, type: 'weapon', attack: 30, criticalRate: 0, criticalDmg: 0, defense: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, freezeDmg: 0, lightningDmg: 0, spriteSheet: 'spriteSheetW1', x: 240, y: 335},
+    {name: 'recurve bow', hand: 2, type: 'weapon', attack: 20, criticalRate: 0, criticalDmg: 0, defense: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, freezeDmg: 0, lightningDmg: 0, spriteSheet: 'spriteSheetW1', x: 528, y: 432},
+    {name: 'warhammer', hand: 2, type: 'weapon', attack: 30, criticalRate: 0, criticalDmg: 0, defense: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, freezeDmg: 0, lightningDmg: 0, spriteSheet: 'spriteSheetW1', x: 336, y: 383},
+    {name: 'wooden wand', hand: 1, type: 'weapon', attack: 30, criticalRate: 0, criticalDmg: 0, defense: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, freezeDmg: 0, lightningDmg: 0, spriteSheet: 'spriteSheetW1', x: 0, y: 526},
+    {name: 'zweihander', hand: 2, type: 'weapon', attack: 45, criticalRate: 0, criticalDmg: 0, defense: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, freezeDmg: 0, lightningDmg: 0, spriteSheet: 'spriteSheetW1', x: 528, y: 383},
+    {name: 'wizard staff', hand: 2, type: 'weapon', attack: 45, criticalRate: 0, criticalDmg: 0, defense: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, freezeDmg: 0, lightningDmg: 0, spriteSheet: 'spriteSheetW1', x: 144, y: 526},
+    {name: 'round wooden shield', hand: 1, type: 'weapon', attack: 45, criticalRate: 0, criticalDmg: 0, defense: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, freezeDmg: 0, lightningDmg: 0, spriteSheet: 'spriteSheetW1', x: 337, y: 526},
+    // need to add special or ability bonus to the weaponList
+];
+const armorList = [
+    {name: 'padded armor', type: 'armor', addedHealth: 0, defense: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0, spriteSheet: 'spriteSheetAmor', x: 32, y: 32},
+    {name: 'splint mail', type: 'armor', addedHealth: 0, defense: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0, spriteSheet: 'spriteSheetAmor', x: 32, y: 0},
+    {name: 'mage robe', type: 'armor', addedHealth: 0, defense: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0, spriteSheet: 'spriteSheetAmor', x: 32, y: 128},
+    {name: 'half-plate armor', type: 'armor', addedHealth: 0, defense: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0, spriteSheet: 'spriteSheetAmor', x: 32, y: 256},
+    {name: 'wizard cloth', type: 'armor', addedHealth: 0, defense: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0, spriteSheet: 'spriteSheetAmor', x: 32, y: 64},
+    {name: 'plate armor', type: 'armor', addedHealth: 0, defense: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0, spriteSheet: 'spriteSheetAmor', x: 32, y: 160},
+    {name: 'robe of solomon', type: 'armor', addedHealth: 0, defense: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0, spriteSheet: 'spriteSheetAmor', x: 32, y: 192},
+    {name: 'scale of níðhöggr', type: 'armor', addedHealth: 0, defense: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0, spriteSheet: 'spriteSheetAmor', x: 32, y: 224},
+    {name: 'plate of cronus', type: 'armor', addedHealth: 0, defense: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0, spriteSheet: 'spriteSheetAmor', x: 32, y: 96},
+    //this for for armor
+];
+const enemies = [
+    {name: 'slime', level: 2, health: 0, attack: 0, defense: 0, criticalRate: 0, criticalDmg: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, lightningDmg: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0},
+    {name: 'king slime', level: 2, health: 0, attack: 0, defense: 0, criticalRate: 0, criticalDmg: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, lightningDmg: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0},
+    {name: 'wounded orc soldier', level: 5, health: 0, attack: 0, defense: 0, criticalRate: 0, criticalDmg: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, lightningDmg: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0},
+    {name: 'orc soldier', level: 10, health: 0, attack: 0, defense: 0, criticalRate: 0, criticalDmg: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, lightningDmg: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0},
+    {name: 'general demon', level: 15, health: 0, attack: 0, defense: 0, criticalRate: 0, criticalDmg: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, lightningDmg: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0},
+    {name: 'warlord', level: 20, health: 0, attack: 0, defense: 0, criticalRate: 0, criticalDmg: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, lightningDmg: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0},
+    {name: 'sauron', level: 20, health: 0, attack: 0, defense: 0, criticalRate: 0, criticalDmg: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, lightningDmg: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0},
+    {name: 'bandit', level: 7, health: 0, attack: 0, defense: 0, criticalRate: 0, criticalDmg: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, lightningDmg: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0},
+    {name: 'human soldier', level: 10, health: 0, attack: 0, defense: 0, criticalRate: 0, criticalDmg: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, lightningDmg: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0},
+    {name: 'hero fellowship', level: 15, health: 0, attack: 0, defense: 0, criticalRate: 0, criticalDmg: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, lightningDmg: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0},
+    {name: 'the hero', level: 20, health: 0, attack: 0, defense: 0, criticalRate: 0, criticalDmg: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, lightningDmg: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0},
+    {name: 'fallen hero', level: 25, health: 0, attack: 0, defense: 0, criticalRate: 0, criticalDmg: 0, penetrationDmg: 0, stunDmg: 0, bleedDmg: 0, poisonDmg: 0, fireDmg: 0, lightningDmg: 0, resStun: 0, resBleed: 0, resPoison: 0, resFire: 0, resFreeze: 0, resLightning: 0},
+];
+const items = [
+  {name: 'health potion', type: 'consumable', spriteSheet: 'spriteSheetW1', x: 528, y: 192},
+  {name: 'sanity potion', type: 'consumable', spriteSheet: 'spriteSheetW1', x: 384, y: 192},
+  {name: 'rope', type: 'equipment', spriteSheet: 'spriteSheetW1', x: 143, y: 287},
+  {name: 'shovel', type: 'equipment', spriteSheet: 'spriteSheetW1', x: 102, y: 287},
+  {name: 'pickaxe', type: 'equipment', spriteSheet: 'spriteSheetW1', x: 240, y: 287 },
+  {name: 'key', type: 'equipment', spriteSheet: 'spriteSheetW1', x: 528, y: 143},
+  {name: 'book of knowledge', type: 'consumable', spriteSheet: 'spriteSheetW1', x: 336, y: 576},
+  {name: 'stamina book', type: 'consumable', spriteSheet: 'spriteSheetW1', x: 432, y: 576},
+  {name: 'strength book', type: 'consumbale', spriteSheet: 'spriteSheetW1', x: 384, y: 576},
+];
+
+
+// Load icon 
+const canvasList = {
+  weapon1: {
+    canvas: document.getElementById("weapon1-canvas"),
+    spriteSheet: new Image(),
+    spriteSrc: './images/roguelikeitemsx3.png',
+    width: 50,
+    height: 50,
+    spriteWidth: 49,
+    spriteHeight: 49,
+  },
+  weapon2: {
+    canvas: document.getElementById("weapon2-canvas"),
+    spriteSheet: new Image(),
+    spriteSrc: './images/roguelikeitemsx3.png',
+    width: 50,
+    height: 50,
+    spriteWidth: 49,
+    spriteHeight: 49,
+  },
+  armor: {
+    canvas: document.getElementById("armor-canvas"),
+    spriteSheet: new Image(),
+    spriteSrc: './images/armor_sheet_32x32.png',
+    width: 50,
+    height: 50,
+    spriteWidth: 32,
+    spriteHeight: 32,
+  },
+  accessories1: {
+    canvas: document.getElementById("wearable-acccessories1-canvas"),
+    spriteSheet: new Image(),
+    spriteSrc: './images/roguelikeitemsx3.png',
+    width: 50,
+    height: 50,
+    spriteWidth: 49,
+    spriteHeight: 49,
+  },
+  accessories2: {
+    canvas: document.getElementById("wearable-acccessories2-canvas"),
+    spriteSheet: new Image(),
+    spriteSrc: './images/roguelikeitemsx3.png',
+    width: 50,
+    height: 50,
+    spriteWidth: 49,
+    spriteHeight: 49,
+  },
+}
+
+// To initialise canvas ctx and images
+Object.values(canvasList).forEach(config => {
+  config.ctx = config.canvas.getContext('2d');
+  config.spriteSheet.src = config.spriteSrc;
+});
+
+const renderIcon = (type, xPos, yPos) => {
+  const config = canvasList[type];
+  if (!config || !config.ctx) {
+    console.error(`invalid type: ${type}`);
+    return;
+  }
+  config.spriteSheet.onload = () => {
+    config.ctx.clearRect(0, 0 ,config.width, config.height);
+    config.ctx.drawImage( config.spriteSheet, xPos, yPos, config.spriteWidth, config.spriteHeight, 0, 0, config.width, config.height);
+  };
+  config.spriteSheet.src = config.spriteSrc
+};
+// Load icon end here ---
+
+// Toggle hide and show inventory
+const inventoryButton = () => {
+    let x = document.getElementById("inventory");
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
+};
+
+// Toggle show character creation modal
+const toggleToShow = () => {
+  let x = document.getElementById('pop-up-character-customization-menu');
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+};
+
+// This is Equipment System
+// const inventoryItems = []; // To store equipments and items
+// function itemAdd () {}; // To add and update equipments and items
+// function itemFinds () {}; // To find equipments and items from the array
+// inventory: how to limit how many object inside array based on how many inventory <div> exists
+// --Equipment system end here--
+
+// function(3)
+const selectWeaponOption = document.getElementById("weapon-select");
+const selectArmorOption = document.getElementById("armor-select");
+const selectedWeaponEquip = document.getElementById("weapon1");
+const selectedArmorEquip = document.getElementById("armor");
+const addEquipMessage = document.getElementById("add-equip-message");
+
+weaponList.forEach((weapon, index) => {
+  let option = document.createElement("option");
+  option.value = index;
+  option.text = weapon.name;
+  selectWeaponOption.appendChild(option);
+});
+armorList.forEach((armor, index) => {
+  let option = document.createElement("option");
+  option.value = index;
+  option.text = armor.name;
+  selectArmorOption.appendChild(option);
+});
+// function(3) end here --
+
+// function(2)  to check if name has been selected (done)
+const givenName = ['Henry', 'Charles', 'Winston', 'Jean', 'Genghis', 'Liu', 'Yamato', 'Cao Cao'];
+const surname = ['Einstein', 'Bonaparte', 'Voltaire', 'Bach', 'Li', 'Mao', 'Zhou', 'Ieyasu', 'Satou'];
+const selectGivenName = document.getElementById("given-name");
+const selectSurname = document.getElementById("surname");
+// These to loop through the array and create option elements for both Given Name and Surname option
+givenName.forEach((optionText, index) => {
+  let option = document.createElement("option");
+  option.value = optionText;
+  option.text = optionText;
+  selectGivenName.appendChild(option);
+});
+surname.forEach((optionText, index) => {
+  let option = document.createElement("option");
+  option.value = optionText;
+  option.text = optionText;
+  selectSurname.appendChild(option);
+});
+// function(2) end here --
+
+// Function(4)
+// Limiting the value of stat inside a group of input
+const inputsStats = document.querySelectorAll(".stat-input");
+const totalSumElement = document.getElementById("sum-stats");
+const maxInputsStats = 48; // Max point allocation
+
+const calculateSumStats = () => {
+  let sumStats = 0;
+  inputsStats.forEach(input => {
+    const value = parseFloat(input.value) || 0;
+    sumStats += value;
+  });
+  if (sumStats > maxInputsStats) {
+    sumStats = maxInputsStats;
+  }
+  totalSumElement.textContent = sumStats;
+// Points allocation based on how much left points that can be distributed
+  const remaining = maxInputsStats - sumStats;
+  inputsStats.forEach(input => {
+    const value = parseFloat(input.value) || 0;
+    input.max = Math.min(30, remaining + value);
+  });
+};
+
+inputsStats.forEach(input => {
+  input.addEventListener("input", calculateSumStats);
+});
+
+// Handling input value changes with wheel and arrow keys
+const inputsStatsAll = [
+  document.getElementById("str-input"),
+  document.getElementById("dex-input"),
+  document.getElementById("int-input"),
+  document.getElementById("cha-input"),
+  document.getElementById("wis-input"),
+  document.getElementById("con-input"),
+];
+
+inputsStatsAll.forEach(input => {
+  input.addEventListener("keydown", (event) =>{
+    // Allow only one character input
+    if (input.value.length >= 1 && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+      event.preventDefault();
+    }
+    // Handle ArrowUp and ArrowDown for increasing/decreasing values
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      input.value = Math.min(input.max || 30, parseFloat(input.value) + 1);
+    } else if (event.key === "ArrowDown") {
+      event.preventDefault();
+      input.value = Math.max(input.min || 1, parseFloat(input.value) - 1);
+    }
+    calculateSumStats();
+  });
+});
+
+inputsStatsAll.forEach(input => {
+  input.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    const newValue = parseFloat(input.value) + (event.deltaY < 0 ? 1 : -1);
+    input.value = Math.max(input.min || 0, Math.min(input.max || 30, newValue));
+    calculateSumStats();
+  });
+});
+// function(4) end here --
+// Function to add inventory slots
+// inventory capacities based on player CON
+const inventoryContainer = document.getElementById('storage-inventory');
+const inventoryCanvases = []; // To store canvas elements
+let counterCon = 0; // To track how many slots have been added
+let currentStatSlots = 0; // Tracks how many slots were added based on stats
+const itemInventoryMap = {}; // Map to track which item associated with each slot
+const addInventorySlots = (count) => {
+  for (let i = 0; i < count; i++) {
+    const newDiv = `<div class="stored"><canvas id="slot-${counterCon}" width="50" height="50"></canvas></div>`;
+    inventoryContainer.insertAdjacentHTML('beforeend', newDiv);
+    const canvasInsideInventory = inventoryContainer.lastElementChild.querySelector('canvas'); // Get the last added canvas
+    inventoryCanvases.push(canvasInsideInventory); // Store the canvas in inventoryCanvases array
+    counterCon++;
+  }
+};
+
+const addInventorySlotByStats = () => {
+  const totalSlotsNeeded = Math.floor(playerStats.con / 3); // Total slots needed based on current stats
+  const newSlots = totalSlotsNeeded - currentStatSlots; // Only add the slots we haven’t added yet
+
+  if (newSlots > 0) {
+    addInventorySlots(newSlots);
+    currentStatSlots += newSlots; // Update the number of slots added for stats
+  }
+};
+// End here --
+
+// all function combined
+document.getElementById("customize-button").addEventListener('click', () => {
+  // Function(3) armor & weapon
+  const selectedWeaponIndex = selectWeaponOption.value;
+  const selectedArmorIndex = selectArmorOption.value;
+  addEquipMessage.textContent = ''; // To clear previous message
+  if (selectedWeaponIndex === "" || selectedArmorIndex === "") {
+    addEquipMessage.textContent = 'Please choose armor and weapon';
+    return false;
+  }
+  // Get weapon and armor by index
+  // Get weapon and armor as object to store
+  const selectedWeaponObject = weaponList[selectedWeaponIndex];
+  const selectedArmorObject = armorList[selectedArmorIndex];
+  // Set the content of the 'weapon' and 'armor' divs
+  // Store the selected equipment in object
+  equippedWeapon1 = selectedWeaponObject;
+  equippedArmor = selectedArmorObject;
+  // Render icon
+  renderIcon('weapon1', selectedWeaponObject.x, selectedWeaponObject.y);
+  renderIcon('armor', selectedArmorObject.x, selectedArmorObject.y);
+  // Load icon end here --
+
+  // Function(2) to check if name has been selected (done)
+  let addNameMessage = document.getElementById("name-add-message");
+  addNameMessage.textContent = ''; // Clear previous messages
+  if (selectGivenName.value === "" || selectSurname.value === "") {
+    addNameMessage.textContent = 'Please choose both Given Name and Surname';
+    return false;
+  }
+  const selectedGivenName = selectGivenName.value;
+  const selectedSurname = selectSurname.value;
+  const playerNameSelected = document.getElementById("player-name-selected");
+  playerNameSelected.textContent = `Name: ${selectedGivenName} ${selectedSurname}`
+
+  // Function(4) to add point to stats
+  const strValue = parseFloat(document.getElementById("str-input").value);
+  const dexValue = parseFloat(document.getElementById("dex-input").value);
+  const intValue = parseFloat(document.getElementById("int-input").value);
+  const chaValue = parseFloat(document.getElementById("cha-input").value);
+  const wisValue = parseFloat(document.getElementById("wis-input").value);
+  const conValue = parseFloat(document.getElementById("con-input").value);
+  const inputs = [strValue, dexValue, intValue, chaValue, wisValue, conValue];
+  
+  // Filter out invalid stats (NaN or 0)
+  const statsValue = inputs.filter(stat => !isNaN(stat) && stat > 0);
+  const totalStats = statsValue.reduce((acc, stat) => acc + stat, 0);
+  let addStatsMessage = document.getElementById("point-add-message");
+  addStatsMessage.textContent = ''; // Clear previous messages
+  
+  // To prevent any of the stats value left 0
+  if (isNaN(strValue) || isNaN(dexValue) || isNaN(intValue) || isNaN(chaValue) || isNaN(wisValue) || isNaN(conValue) || strValue <= 0 || dexValue <= 0 || intValue <= 0 || chaValue <= 0 || wisValue <= 0 || conValue <= 0) {
+    addStatsMessage.textContent = 'Please fill all the stats';
+    return false;
+  }
+
+  // Check if the sum of valid stats is 48
+  if (statsValue.length === 0 || totalStats !== 48) {
+    addStatsMessage.textContent = `You have allocated ${totalStats} points, but you need to allocate exactly 48 points`;
+    return false;
+  }
+
+  // Update character stats
+  playerStats.str = strValue; strText.innerText = playerStats.str;
+  playerStats.dex = dexValue; dexText.innerText = playerStats.dex;
+  playerStats.int = intValue; intText.innerText = playerStats.int;
+  playerStats.cha = chaValue; chaText.innerText = playerStats.cha;
+  playerStats.wis = wisValue; wisText.innerText = playerStats.wis;
+  playerStats.con = conValue; conText.innerText = playerStats.con;
+
+  //condition where a div is added every time the value of a Con can be divided by 3. You would also need to increment con (e.g., by 1 each time) and check if it is divisible by 3. If it is divisible by 3, you add the div element to the DOM.
+  // Check and add a div each time con is divisible by 3
+  // Use a loop to add divs for each multiple of 3 (if con is updated many times)
+  addInventorySlots(6);
+  addInventorySlotByStats();
+  // To close both pop-up customize charater and create charatcer button
+  document.getElementById('pop-up-character-customization-menu').style.display = 
+  (document.getElementById('pop-up-character-customization-menu').style.display === "none") ? "block" : "none";
+  document.getElementById('create-character').style.display = 
+  (document.getElementById('create-character').style.display === "none") ? "block" : "none";
+
+  return true;
+});
+
+// Function to always checks and update every time player stats change
+function updatePlayerStats (newStrAdded, newDexAdded, newIntAdded, newChaAdded, newWisAdded, newConAdded) { // This function need to be updated
+  // Update the global stats value
+  playerStats.str = newStrAdded; //added later
+  playerStats.dex = newDexAdded; //added later
+  playerStats.int = newIntAdded; //added later
+  playerStats.cha = newChaAdded; //added later
+  playerStats.wis = newWisAdded; //added later
+  playerStats.con = newConAdded;
+
+  let counterCon = 0;
+  for (let i = 3; i <= con; i += 3) {
+    const newDiv = `<div class="stored"><canvas></canvas></div>`;
+    inventoryContainer.insertAdjacentHTML('beforeend', newDiv);
+    counterCon++;
+  }
+  console.log(inventory)
+};
+
+// Function to render icons in inventory
+const renderIconInventoryCanvas = () => {
+  for (let i = 0; i < inventory.length; i++) {
+    const item = inventory[i]; // Get the item from inventory
+    const canvasSlot = document.getElementById(`slot-${i}`); // Get corresponding canvas
+
+    if (!canvasSlot) {
+      console.error(`Canvas for slot-${i} not found`);
+      continue;
+    }
+
+    const ctx = canvasSlot.getContext('2d');
+    ctx.clearRect(0, 0, canvasSlot.width, canvasSlot.height); // Clear canvas
+
+    let config, spriteSheet, spriteX, spriteY;
+
+    if (item.type === 'weapon') {
+      config = canvasList.weapon1;
+    } else if (item.type === 'armor') {
+      config = canvasList.armor;
+    } else {
+      console.warn(`Unknown item type for item ${item.name}`);
+      continue;
+    }
+
+    spriteSheet = config.spriteSheet;
+    spriteX = item.x;
+    spriteY = item.y;
+    // Draw the item sprite onto the canvas
+    ctx.drawImage(
+      spriteSheet,
+      spriteX, spriteY,
+      config.spriteWidth, config.spriteHeight,
+      0, 0,
+      canvasSlot.width, canvasSlot.height
+    );
+  }
+};
+// Render icon to inventory end here ---
+// Render icon to Equipped Item
+const renderIconEquippedItem = () => {
+
+};
+// Render icon to Equipped item end here ---
+// Move equipment and items to inventory
+canvasList.weapon1.canvas.addEventListener('click', () => {
+  if (equippedWeapon1 && equippedWeapon1.name) {
+    // Move weapon to inventory
+    let weaponMove = equippedWeapon1; // Move the whole object
+    inventory.push(weaponMove);  // Add weapon to inventory
+    equippedWeapon1 = {};  // Clear the equipped weapon (move it out)
+
+    // Clear the canvas using the refactored context
+    const { ctx, width, height } = canvasList.weapon1;
+    ctx.clearRect(0, 0, width, height); // Clear the canvas
+
+    // Re-render the inventory icons
+    renderIconInventoryCanvas();
+  }
+});
+
+// Move Armor to Inventory on Click
+canvasList.armor.canvas.addEventListener('click', () => {
+  if (equippedArmor && equippedArmor.name) {
+    // Move armor to inventory
+    let armorMove = equippedArmor; // Move the whole object
+    inventory.push(armorMove);  // Add armor to inventory
+    equippedArmor = {};  // Clear the equipped armor (move it out)
+
+    // Clear the canvas using the refactored context
+    const { ctx, width, height } = canvasList.armor;
+    ctx.clearRect(0, 0, width, height); // Clear the canvas
+
+    // Re-render the inventory icons
+    renderIconInventoryCanvas();
+  }
+});
+
+// Function to Equip weapon, armor, or accessories from inventory
+const equipItem = (name, type) => {
+  const itemIndex = inventory.findIndex(item => item.name === name && item.type === type);
+  if (itemIndex === -1) {
+    console.log(`Item ${name} of type ${type} not found in inventory.`);
+    return;
+  }
+  const item = inventory[itemIndex];
+  // Equip item
+  if (type === 'weapon') {
+    if (equippedWeapon1 !== null) {
+      if (item.hand === 2) {
+        if (equippedWeapon1 || equippedWeapon2) {
+          console.log("Cannot equip two-handed weapon: Unequip both weapon slots first.");
+          return;
+        }
+        equippedWeapon1 = item;
+        equippedWeapon2 = null;
+        console.log(`Equipped "${item.name}" as a two-handed weapon.`);
+      } else {
+        if (!equippedWeapon1) {
+          equippedWeapon1 = item;
+          console.log(`Equipped "${item.name}" in Weapon Slot 1.`);
+        } else if (!equippedWeapon2) {
+          equippedWeapon2 = item;
+          console.log(`Equipped "${item.name}" in Weapon Slot 2.`);
+        } else {
+          console.log("Both weapon slots are occupied. Unequip one to equip this item.");
+          return;
+        }
+      }
+    }
+  } else if (type === 'armor') {
+    if (equippedArmor !== null) {
+      console.log(`Unequipping previous armor: ${equippedArmor.name}`);
+      inventory.push(equippedArmor);
+    }
+    equippedArmor = item;
+    console.log(`${item.name} equipped as armor`);
+  } else if (type === 'accessories') {
+    if (equippedAccessories !== null) {
+      console.log (`Unequipping previous accessories: ${equippedAccessories.name}`);
+      inventory.push(equippedAccessories);
+    }
+    equippedAccessories = item;
+    console.log(`${item.name} equipped as acessories`);
+  } else {
+    console.log(`Invalid type "${type}".`);
+    return;}
+  inventory.splice(itemIndex, 1); // Remove the equipped item from inventory
+};
+// Function to UnEquip weapon, armor, or accessories from inventory
+const unequipItemByType = (type) => {
+  if (type === 'weapon') {
+      if (equippedWeapon1) {
+          console.log(`Unequipping "${equippedWeapon1.name}" from Weapon Slot 1.`);
+          inventory.push(equippedWeapon1);
+          equippedWeapon1 = null;
+      } else if (equippedWeapon2) {
+          console.log(`Unequipping "${equippedWeapon2.name}" from Weapon Slot 2.`);
+          inventory.push(equippedWeapon2);
+          equippedWeapon2 = null;
+      } else {
+          console.log("No weapons currently equipped.");
+      }
+  } else if (type === 'armor') {
+      if (equippedArmor) {
+          console.log(`Unequipping "${equippedArmor.name}".`);
+          inventory.push(equippedArmor);
+          equippedArmor = null;
+      } else {
+          console.log("No armor currently equipped.");
+      }
+  } else if (type === 'accessory') {
+      if (equippedAccessories) {
+          console.log(`Unequipping accessory "${equippedAccessories.name}".`);
+          inventory.push(equippedAccessories);
+      } else {
+          console.log("No accessories currently equipped.");
+      }
+  } else {
+      console.log(`Invalid type "${type}".`);
+  }
+};
+// Remove equipment and items and here --
+
+console.log(equippedWeapon1);
+console.log(equippedArmor);
+console.log(inventory);
+console.log(inventoryCanvases);
+console.log(itemInventoryMap);
+inventoryContainer.addEventListener('click', (event) => {
+  const target = event.target; // To target the item that being clicked
+  if (target.tagName === 'CANVAS' && target.id.startsWith('slot-')) {
+    handleCanvasClick(target.id);
+    
+  }
+});
+function handleCanvasClick(canvasId) {
+  console.log(`Canvas with ID ${canvasId} clicked!`);
+}
+
+// create function to equip and unequip
+// create item interaction
+// create pick and drop inventory system

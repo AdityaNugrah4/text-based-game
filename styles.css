@@ -1,0 +1,587 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --border-color1: rgb(159, 74, 37);
+    --border-color2: rgb(243, 243, 243);
+    --border-color3: rgb(129, 129, 129);
+    --border-color4: rgb(162, 97, 70);
+    --border-color5: rgb(253, 225, 213);
+    --background-color1: rgb(234, 186, 141);
+    --background-color2: rgb(243, 243, 243);
+    --background-color3: rgb(183, 182, 182);
+    --background-color4: rgb(255, 255, 227);
+    --background-color5: rgb(104, 53, 31);
+}
+
+html {
+    background-color: var(--background-color1);
+    font-family: 'VT323', monospace;
+}
+
+body {
+    margin: 10px;
+    overflow-x: hidden;
+    /* Hide horizontal scrollbar */
+}
+
+/* Player name */
+.player-name {
+    background-color: var(--background-color2);
+    width: 658px;
+    height: 30px;
+    font-size: 28px;
+    align-content: center;
+    box-shadow: -4px 0 0 0 var(--border-color2), 4px 0 0 0 var(--border-color2), 0 -4px 0 0 var(--border-color2), 0 4px 0 0 var(--border-color2);
+    margin: 14px 0 14px 0;
+}
+
+/* Player name end here */
+
+/* Player stats eg: hp, sanity, experience, gold, etc */
+.player-condition-stats {
+    background-color: var(--background-color2);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 658px;
+    height: 100%;
+    margin: 0 0 14px 0;
+    font-size: 24px;
+    justify-content: left;
+    align-content: center;
+    box-shadow: -4px 0 0 0 var(--border-color2), 4px 0 0 0 var(--border-color2), 0 -4px 0 0 var(--border-color2), 0 4px 0 0 var(--border-color2);
+}
+
+#player-condition {
+    display: grid;
+    width: 200px;
+    height: 50px;
+    padding: 3px;
+    position: relative;
+    text-align: left;
+    align-content: space-around;
+}
+
+#game-stats {
+    position: relative;
+    width: 240px;
+    height: 50px;
+    padding: 3px;
+    text-align: center;
+    align-content: space-around;
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr;
+}
+
+#xp-gold {
+    display: grid;
+    width: 200px;
+    height: 50px;
+    padding: 3px;
+    position: relative;
+    text-align: right;
+    align-content: space-around;
+}
+
+/* Player stats end here */
+
+/* #controls is for the menu button so player can interacts with map, equipment, etc */
+#controls {
+    background-color: var(--background-color2);
+    display: flex;
+    margin: auto;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/* whats make the menu in center */
+.controls-center {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-content: center;
+}
+
+.controls-button {
+    width: 160px;
+    height: 40px;
+    align-content: center;
+    text-align: center;
+    margin: 5px;
+    font-family: 'VT323', monospace;
+    font-size: 24px;
+
+}
+
+button {
+    background-color: var(--background-color5);
+    cursor: pointer;
+    font-family: 'VT323', monospace;
+    color: aliceblue;
+    font-size: 18px;
+    margin: 15px;
+    padding: 10px;
+    box-shadow: -4px 0 0 0 var(--border-color3), 4px 0 0 0 var(--border-color3), 0 -4px 0 0 var(--border-color3), 0 4px 0 0 var(--border-color3);
+}
+
+button:disabled {
+    pointer-events: none;
+}
+
+button:hover {
+    box-shadow: -4px 0 0 0 var(--border-color3), 4px 0 0 0 var(--border-color3), 0 -4px 0 0 var(--border-color3), 0 4px 0 0 var(--border-color3);
+    transform: translateY(-2px);
+}
+
+button:active {
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+.inventory {
+    /* for all inventory */
+    background-color: var(--background-color2);
+    width: 120px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    justify-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    /* Adjust minmax for desired size */
+    gap: 10px;
+    /* Space between grid items */
+    display: none;
+    /* Initially hidden */
+    padding: 2px;
+    box-shadow: -4px 0 0 0 var(--border-color3), 4px 0 0 0 var(--border-color3), 0 -4px 0 0 var(--border-color3), 0 4px 0 0 var(--border-color3);
+    margin: 14px 10px;
+    font-size: 24px;
+}
+
+.equipped-inventory {
+    width: 115px;
+    display: flex;
+    flex-wrap: wrap;
+    /* Allow boxes to wrap to the next line */
+    gap: 8px;
+    justify-content: space-evenly;
+    /* Space boxes evenly */
+    margin: 7px 0;
+}
+
+.equipped {
+    background-color: var(--background-color4);
+    width: 50px;
+    height: 50px;
+    box-shadow: -3px 0 0 0 var(--border-color4), 3px 0 0 0 var(--border-color4), 0 -3px 0 0 var(--border-color4), 0 3px 0 0 var(--border-color4);
+}
+
+.stored-inventory {
+    /* for actual inventory */
+    width: 115px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    /* Adjust minmax for desired size */
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    gap: 8px;
+    /* Space between grid items */
+    margin: 7px 0;
+}
+
+.stored {
+    background-color: var(--background-color4);
+    width: 50px;
+    height: 50px;
+    box-shadow: -3px 0 0 0 var(--border-color4), 3px 0 0 0 var(--border-color4), 0 -3px 0 0 var(--border-color4), 0 3px 0 0 var(--border-color4);
+}
+
+/* Close button for inventory */
+.close-button {
+    position: relative;
+    width: 20px;
+    /* Set width */
+    height: 20px;
+    /* Set height */
+    border: none;
+    background-color: #ff4d4d;
+    /* Background color */
+    cursor: pointer;
+    box-shadow: -3px 0 0 0 var(--border-color3), 3px 0 0 0 var(--border-color3), 0 -3px 0 0 var(--border-color3), 0 3px 0 0 var(--border-color3);
+    margin: 6px 0;
+}
+
+.line {
+    position: absolute;
+    width: 15px;
+    /* Width of the lines */
+    height: 4px;
+    /* Height of the lines */
+    background-color: white;
+    /* Line color */
+    top: 50%;
+    /* Center vertically */
+    left: 50%;
+    /* Center horizontally */
+    transform: translate(-50%, -50%) rotate(45deg);
+    /* Position the first line */
+    transition: transform 0.2s ease;
+    /* Smooth transition */
+}
+
+.line2 {
+    transform: translate(-50%, -50%) rotate(-45deg);
+    /* Position the second line */
+}
+
+/* Optional: Change the background on hover */
+.close-button:hover {
+    background-color: #ff3333;
+    /* Darker red on hover */
+}
+
+/* Optional: Change the line color on hover */
+.close-button:hover .line {
+    background-color: #f0f0f0;
+    /* Change lines to match background */
+}
+
+/* Dropdown Menu (select menu) */
+select {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    text-align: center;
+    margin: 6px 0;
+    border: none;
+    box-shadow: -3px 0 0 0 var(--border-color4), 3px 0 0 0 var(--border-color4), 0 -3px 0 0 var(--border-color4), 0 3px 0 0 var(--border-color4);
+}
+
+/* Input Menu */
+input {
+    font-family: 'VT323', monospace;
+    font-size: 24px;
+    border: none;
+    box-shadow: -3px 0 0 0 var(--border-color4), 3px 0 0 0 var(--border-color4), 0 -3px 0 0 var(--border-color4), 0 3px 0 0 var(--border-color4);
+}
+
+/* horizontal bar separting player stats and text */
+.experience-progress {
+    display: grid;
+    justify-content: space-around;
+    /* Centers horizontally */
+    align-items: center;
+    /* Centers vertically */
+    height: 10px;
+    background-color: var(--border-color1);
+    box-shadow: -4px 0 0 0 var(--border-color1), 4px 0 0 0 var(--border-color1), 0 -4px 0 0 var(--border-color1), 0 4px 0 0 var(--border-color1);
+    margin: 0 0 14px 0;
+}
+
+/* Text design */
+.main-text-container {
+    display: grid;
+    justify-content: space-around;
+    /* Centers horizontally */
+    align-items: center;
+    /* Centers vertically */
+    align-content: center;
+    justify-items: center;
+    text-align: center;
+    max-height: auto;
+    height: fit-content;
+    font-size: 20px;
+    background-color: var(--background-color2);
+    padding: 10px;
+    box-shadow: -4px 0 0 0 var(--border-color2), 4px 0 0 0 var(--border-color2), 0 -4px 0 0 var(--border-color2), 0 4px 0 0 var(--border-color2);
+    margin: 14px 0 80px 0;
+}
+
+/* Story text part */
+.main-text {
+    margin: 15px;
+}
+
+.create-character {
+    height: 50px;
+    width: 150px;
+    margin: auto;
+    display: block;
+}
+
+/* Story text part end here */
+
+/* Character customization menu */
+.pop-up-character-customization-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100%;
+    display: none;
+    /* Initially hidden */
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+}
+
+.main-character-customization-menu {
+    background-color: var(--background-color2);
+    height: 500px;
+    width: 400px;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+    text-align: center;
+    font-size: 20px;
+    box-shadow: -6px 0 0 0 var(--border-color5), 6px 0 0 0 var(--border-color5), 0 -6px 0 0 var(--border-color5), 0 6px 0 0 var(--border-color5);
+}
+
+.adjust-character-name {
+    margin: 8px;
+}
+
+.adjust-character-equipment {
+    margin: 8px;
+}
+
+.adjust-character-stat {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /*repeat(auto-fill, minmax(40px, 1fr));  Adjust minmax for desired size */
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    gap: 7px;
+    /* Space between grid items */
+    width: 100%;
+    height: 36%;
+    margin: 8px;
+}
+
+#add-message {
+    color: #ff4d4d;
+}
+
+/* customizing character stat */
+.adjust-character-stat input {
+    width: 35px;
+    height: 22px;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1;
+}
+
+/* Character customization menu end here */
+
+
+/* store page (currently blank) */
+.drop-item-page {
+    display: none;
+    /* initially block depend if player visit the store */
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.7);
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    align-content: center;
+    justify-items: center;
+}
+
+.drop-item-page-outer {
+    background-color: aliceblue;
+    position: relative;
+    height: 450px;
+    width: 500px;
+    border-radius: 5px;
+    align-content: start;
+    justify-items: center;
+}
+
+.drop-item-page-inner {
+    display: block;
+    background-color: bisque;
+    height: 60%;
+    width: 93%;
+    margin: 20px;
+    gap: 1px;
+    /* Space between grid items */
+    text-align: center;
+}
+
+.modal-page {
+    background-color: var(--background-color1);
+    border: 2px solid var(--border-color1);
+    display: none;
+    width: 500px;
+    height: 300px;
+    position: fixed;
+    font-size: 20px;
+    inset: 0px;
+    /* inset: 0px, which is a shorthand that sets top, left, right, and bottom all to the same value, 0px */
+    margin: auto;
+    text-align: center;
+    align-content: center;
+    box-shadow: -6px 0 0 0 var(--border-color4), 6px 0 0 0 var(--border-color4), 0 -6px 0 0 var(--border-color4), 0 6px 0 0 var(--border-color4);
+    padding: 5px;
+}
+
+.consumable-modal-button {
+    height: 50px;
+}
+
+/* battle page*/
+.pop-up-battle-page {
+    display: none;
+    /* initially block */
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    align-content: center;
+    justify-items: center;
+}
+
+.battle-page {
+    background-color: var(--background-color2);
+    position: relative;
+    height: 550px;
+    width: 600px;
+    padding-top: 10px;
+    border: solid 2px var(--border-color1);
+    box-shadow: -6px 0 0 0 var(--border-color4), 6px 0 0 0 var(--border-color4), 0 -6px 0 0 var(--border-color4), 0 6px 0 0 var(--border-color4);
+    padding: 5px;
+}
+
+.player-and-enemy-name {
+    position: relative;
+    font-size: 36px;
+    align-content: center;
+    height: 30px;
+    margin: 10px;
+}
+
+.player-and-enemy-name span:last-of-type {
+    position: absolute;
+    right: 10px;
+}
+
+.smaller-player-and-enemy-health-bar {
+    position: absolute;
+    display: flex;
+    height: 40px;
+    width: 100%;
+    background-color: brown;
+}
+
+.player-health-bar-background {
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    height: 30px;
+    background-color: red;
+    height: 30px;
+    width: 100%;
+}
+
+.player-health-bar {
+    position: absolute;
+    background-color: aqua;
+    height: 20px;
+    width: 100%;
+}
+
+.enemy-health-bar-background {
+    position: relative;
+    height: 30px;
+    background-color: red;
+    height: 30px;
+    width: 100%;
+}
+
+.enemy-health-bar {
+    position: absolute;
+    background-color: aqua;
+    height: 20px;
+    width: 100%;
+}
+
+/*
+.player-and-enemy-health-bar span:first-of-type {
+    position: absolute;
+    left: 10px;
+}
+.player-and-enemy-health-bar span:last-of-type {
+    position: absolute;
+    right: 10px;
+} */
+
+.arena-battle {
+    background-color: #ffebcd;
+    height: 300px;
+    margin: 10px;
+    border: 5px solid #f9ad3b;
+}
+
+.arena-battle div:first-of-type {
+    position: fixed;
+    top: 32%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+#canvas1 {
+    align-content: stretch;
+    justify-content: stretch;
+    align-items: stretch;
+    justify-content: stretch;
+    position: relative;
+    top: 54%;
+    left: 33%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+}
+
+#canvas2 {
+    align-content: stretch;
+    justify-content: stretch;
+    align-items: stretch;
+    justify-content: stretch;
+    position: relative;
+    top: 54%;
+    left: 31%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+}
+
+.text-option-container {
+    display: none;
+}
+
+.button-battle {
+    margin: 1px;
+    display: grid;
+    align-content: space-around;
+    justify-items: space-around;
+}
+
+/* battle page end here*/

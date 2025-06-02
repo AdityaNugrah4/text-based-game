@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Grid Layout</title>
+    <style>
+        #gridContainer {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Adjust minmax for desired size */
+            gap: 10px; /* Space between grid items */
+        }
+        .gridItem {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div id="gridContainer"></div>
+<button id="addButton">Add Item</button>
+
+<script>
+const gridContainer = document.getElementById('gridContainer');
+let itemCount = 0;
+
+document.getElementById('addButton').addEventListener('click', () => {
+    itemCount++;
+    const newDiv = `<div class="gridItem">Item ${itemCount}</div>`;
+    gridContainer.insertAdjacentHTML('beforeend', newDiv); // Add the new div using string interpolation
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Path: Select</title>
+        <link rel="stylesheet" href="styles.css">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body id="main-body">
+        <div id="player-name-selected" class="player-name">Name: 
+            <span id="player-given-name"></span>
+            <span id="player-surname"></span>
+        </div>
+        <div id="player-condition-stats" class="player-condition-stats">
+            <div id="player-condition">
+                <span class="player-current-condition">Health Pool: <strong id="health-pool"> 0</strong> </span>
+                <span class="player-current-condition">Sanity Pool: <strong id="sanity-pool"> 0</strong></span>
+            </div>
+            <div id="game-stats">
+                    <div class="stats">STR: <strong id="str-Text">0</strong></div>
+                    <div class="stats">DEX: <strong id="dex-Text">0</strong></div>
+                    <div class="stats">INT: <strong id="int-Text">0</strong></div>
+                    <div class="stats">CHA: <strong id="cha-Text">0</strong></div>
+                    <div class="stats">WIS: <strong id="wis-Text">0</strong></div>
+                    <div class="stats">CON: <strong id="con-Text">0</strong></div>
+            </div>
+            <div id="xp-gold">
+                <div class="stats">Experience: <strong id="str-Text">0</strong></div>
+                <div class="stats">Gold: <strong id="str-Text">0</strong></div>
+            </div>
+        </div>
+        <div id="controls">
+            <div class="controls-center">
+                <button id="button1" class="controls-button">MAP</button>
+                <button id="button2" class="controls-button">INVENTORY</button>
+                <button id="button3" class="controls-button">TRAVEL JOURNAL</button>
+                <button id="button4" class="controls-button">SETTINGS</button>
+            </div>
+        </div>
+        <div id="inventory" class="inventory">
+            <button id="inventory-close-button" class="close-button" aria-label="Close">
+                <span class="line line1"></span>
+                <span class="line line2"></span>
+            </button>
+            <div>Equipped</div>
+            <div class="equipped-inventory">
+                <div id="weapon1" class="equipped"><canvas id="weapon1-canvas"></canvas></div>
+                <div id="weapon2" class="equipped"><canvas id="weapon2-canvas"></canvas></div>
+                <div id="wearable-acccessories1" class="equipped"><canvas id="wearable-acccessories1-canvas"></canvas></div>
+                <div id="wearable-acccessories2" class="equipped"><canvas id="wearable-acccessories2-canvas"></canvas></div>
+                <div id="armor" class="equipped"><canvas id="armor-canvas"></canvas></div>
+            </div>
+            <div>Storage</div>
+            <div id="storage-inventory" class="stored-inventory">
+            </div>
+        </div>
+        <div id="experience-progress" class="experience-progress"></div>
+        <div class="main-text-container">
+            <p3 id="main-text" class="main-text">Welcome to <strong>Path: Select</strong>. To start the game please create your character.</p3>
+            <div id="text-option-container" class="text-option-container">
+                <div id="text-story">text</div>
+                <div id="text-option-button">
+                    <button class="story-button">Option1</button>
+                    <button class="story-button">Option2</button>
+                    <button class="story-button">Option3</button>
+                    <button class="story-button">Option4</button>
+                </div>
+            </div>
+            <button id="create-character" class="create-character">Create Character</button>
+        </div>
+        <div id="pop-up-character-customization-menu" class="pop-up-character-customization-menu">
+            <div class="main-character-customization-menu">
+                <span>Customize your character</span>
+                <div class="adjust-character-name">
+                    <span>Gives your character a name</span>
+                    <div>
+                        <select id="given-name">
+                            <option id="given-name-option" value="">--Choose a Given Name--</option>
+                        </select>
+                        <select id="surname">
+                            <option id="surname-option" value="">--Choose a Surname--</option>
+                        </select>
+                    </div>
+                    <span id="name-add-message"></span>
+                    <!-- <button onclick="checkSelectOption()">Submit</button> -->
+                </div>
+                <div>
+                    <div class="adjust-character-equipment">
+                        <span>Choose your starting equipment</span>
+                        <select id="weapon-select">
+                            <option id="weapon-option" value="">--Choose Weapon--</option>
+                        </select>
+                        <select id="armor-select">
+                            <option value="armor-option" value="">--Choose Armor--</option>
+                        </select>
+                    </div>
+                    <span id="add-equip-message"></span>
+                </div>
+                <div>
+                    <span>Input points into status window</span>
+                    <div id="point-add-message"></div>
+                    <div>Points allocated: <span id="sum-stats"></span></div>
+                    <div class="adjust-character-stat">
+                        <span>STR: </span><input class="stat-input" id="str-input" type="number" value="0" min="0" />
+                        <span>DEX: </span><input class="stat-input" id="dex-input" type="number" value="0" min="0" />
+                        <span>INT: </span><input class="stat-input" id="int-input" type="number" value="0" min="0" />
+                        <span>CHA: </span><input class="stat-input" id="cha-input" type="number" value="0" min="0" />
+                        <span>WIS: </span><input class="stat-input" id="wis-input" type="number" value="0" min="0" />
+                        <span>CON: </span><input class="stat-input" id="con-input" type="number" value="0" min="0" />
+                    </div>
+                </div>
+                <button id="customize-button">Create</button>
+            </div>
+        </div>
+        <div id="weaponModal" style="display: none;">
+            <p>Choose which weapon slot to replace:</p>
+            <button id="replaceWeapon1">Replace Weapon Slot 1</button>
+            <button id="replaceWeapon2">Replace Weapon Slot 2</button>
+        </div>
+        <div id="accessoriesModal" style="display: none;">
+            <p>Choose which weapon slot to replace:</p>
+            <button id="replaceAccessories1">Replace Accessories Slot 1</button>
+            <button id="replaceAccessories2">Replace Accessories Slot 2</button>
+        </div>
+        <div id="pop-up-battle-page" class="pop-up-battle-page">
+            <div class="battle-page-outer-area"></div>
+            <div id="battle-page" class="battle-page">
+                <div id="player-and-enemy-name" class="player-and-enemy-name">
+                    <span>Player</span>
+                    <span id="monsters-name">Enemy</span>
+                </div>
+                <!-- player and enemy health bar container -->
+                <div id="player-and-enemy-health-bar" class="player-and-enemy-health-bar" style="position: relative" >
+                    <!-- smaller container -->
+                    <div class="smaller-player-and-enemy-health-bar">
+                        <!-- player health bar -->
+                        <div class="player-health-bar-background">
+                            <div id="player-health-bar" class="player-health-bar"></div>
+                        </div>
+                        <!-- placeholder -->
+                        <div style="background-color: blueviolet; height: 30px; width: 50px; flex-shrink: 0;"></div>
+                        <!-- enemy health bar -->
+                        <div class="enemy-health-bar-background">
+                            <div id="enemy-health-bar" class="enemy-health-bar"></div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div id="arena-battle" class="arena-battle">
+                    <div id="msg-text"></div>
+                    <canvas id="canvas1"></canvas>
+                    <canvas id="canvas2"></canvas>
+                </div>
+                <div class="button-battle">
+                    <button id="start-fight-btn">Start Fighting</button>
+                    <button id="attack-btn">Attack</button>
+                    <button id="dodge-btn">Dodge</button>
+                </div>
+                
+            </div>
+        </div>
+        <div id="drop-item-page" class="drop-item-page">
+            <div class="drop-item-page-outer">
+                <div id="drop-item-page-inner" class="drop-item-page-inner">
+                    <a id="drop-item-text"></a>
+                </div>
+                <button id="exit-drop-item-page">Exit Drop Item</button>
+            </div>
+        </div>
+    </body>
+    
+    <script type="module" src="script.js"></script>
+    <script type="module" src="animation.js"></script>
+    <script type="module" src="CombatLoop.js"></script>
+    <!-- restore this ofter creating the text choice <script src="animation.js"></script> -->
+</html>

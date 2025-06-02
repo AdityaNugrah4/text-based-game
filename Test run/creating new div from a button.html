@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Div Creation</title>
+</head>
+<body>
+    <section id="mySection"></section>
+    <button id="createDivButton">Create Div</button>
+
+    <script>
+        let count = 0;
+
+        document.getElementById('createDivButton').addEventListener('click', () => {
+            count++; // Increment the count for each new div
+            
+            // Create a new div using string interpolation
+            const newDiv = `<div>This is div</div>`;
+            
+            // Insert the new div into the specific tag
+            document.getElementById('mySection').innerHTML += newDiv;
+        });
+    </script>
+</body>
+</html>
